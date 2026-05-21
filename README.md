@@ -48,11 +48,3 @@ python -m unittest discover -s tests -v
 | `models.py` | `AnalysisResult` model |
 | `REPORT.md` | Coursework report |
 | `tests/` | Unit tests |
-
-## Submit zip (no venv)
-
-```bash
-git archive -o ../Project-submit.zip HEAD
-```
-
-Do not include `venv/`, `__pycache__/`, or `.env` in submissions.
