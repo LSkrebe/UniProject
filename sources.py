@@ -22,11 +22,25 @@ class UrlDocumentSource(DocumentSource):
         self._url = url
         self._config = AppConfig()
 
+    def _request_headers(self):
+        user_agent = self._config.user_agent
+        if "sec.gov" in self._url.lower():
+            if not user_agent or "@" not in user_agent:
+                raise ValueError(
+                    "SEC.gov blocks requests without contact info. "
+                    "Add to .env: HTTP_USER_AGENT=Your Name UniProject/1.0 "
+                    "(your.email@university.edu)"
+                )
+        elif not user_agent:
+            user_agent = "DocumentAnalyzer/1.0"
+        return {
+            "User-Agent": user_agent,
+            "Accept-Encoding": "gzip, deflate",
+        }
+
     def fetch_text(self):
         response = requests.get(
-            self._url,
-            headers={"User-Agent": "DocumentAnalyzer/1.0"},
-            timeout=30,
+            self._url, headers=self._request_headers(), timeout=30
         )
         response.raise_for_status()
         text = re.sub(r"<[^>]+>", " ", response.text)

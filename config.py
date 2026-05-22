@@ -33,3 +33,9 @@ class AppConfig:
     @property
     def history_path(self):
         return os.path.join("data", "analysis_history.json")
+
+    @property
+    def user_agent(self):
+        """HTTP User-Agent; SEC.gov requires name + email (see .env.example)."""
+        self.load()
+        return os.getenv("HTTP_USER_AGENT", "").strip()

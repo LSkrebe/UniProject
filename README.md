@@ -17,7 +17,7 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Edit .env — set OPENAI_API_KEY
+# Edit .env — set OPENAI_API_KEY and HTTP_USER_AGENT (required for SEC URLs)
 ```
 
 ## Run

@@ -28,6 +28,17 @@ class TestFileDocumentSource(unittest.TestCase):
 
 
 class TestUrlDocumentSource(unittest.TestCase):
+    def test_sec_url_requires_user_agent(self):
+        source = UrlDocumentSource(
+            "https://www.sec.gov/Archives/edgar/data/320193/aapl.htm"
+        )
+        source._config = MagicMock()
+        source._config.user_agent = ""
+        source._config.max_chars = 12000
+        with self.assertRaises(ValueError) as ctx:
+            source.fetch_text()
+        self.assertIn("HTTP_USER_AGENT", str(ctx.exception))
+
     @patch("sources.requests.get")
     def test_fetch_strips_html(self, mock_get):
         mock_response = MagicMock()
