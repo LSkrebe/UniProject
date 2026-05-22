@@ -35,8 +35,9 @@ class OpenAITextAnalyzer(TextAnalyzer):
                     "role": "user",
                     "content": (
                         "Analyze this document for investors. Return JSON with "
-                        "keys: summary, risks, opportunities, sentiment, "
-                        f"event_type.\n\n{text}"
+                        "keys: summary (string), risks (array of strings), "
+                        "opportunities (array of strings), sentiment (string), "
+                        f"event_type (string). Each array must have 3-5 items.\n\n{text}"
                     ),
                 }
             ],

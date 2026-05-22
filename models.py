@@ -1,6 +1,15 @@
 """Domain models with encapsulation."""
 
 
+def _as_string_list(value):
+    """Ensure risks/opportunities are lists, not split strings."""
+    if not value:
+        return []
+    if isinstance(value, str):
+        return [value.strip()] if value.strip() else []
+    return [str(item).strip() for item in value if str(item).strip()]
+
+
 class AnalysisResult:
     """Stores one document analysis (private fields, public accessors)."""
 
@@ -14,8 +23,8 @@ class AnalysisResult:
         source="",
     ):
         self._summary = summary
-        self._risks = list(risks)
-        self._opportunities = list(opportunities)
+        self._risks = _as_string_list(risks)
+        self._opportunities = _as_string_list(opportunities)
         self._sentiment = sentiment
         self._event_type = event_type
         self._source = source
@@ -58,8 +67,8 @@ class AnalysisResult:
     def from_dict(cls, data):
         return cls(
             summary=data.get("summary", ""),
-            risks=data.get("risks", []),
-            opportunities=data.get("opportunities", []),
+            risks=_as_string_list(data.get("risks", [])),
+            opportunities=_as_string_list(data.get("opportunities", [])),
             sentiment=data.get("sentiment", ""),
             event_type=data.get("event_type", ""),
             source=data.get("source", ""),
